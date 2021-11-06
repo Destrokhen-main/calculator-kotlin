@@ -17,7 +17,6 @@
     <style name="MainButton">
         <item name="android:layout_height">70dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_width">0dp</item>
         <item name="android:textSize">24sp</item>
 <!--        <item name="android:textColor">@color/black</item>-->
     </style>

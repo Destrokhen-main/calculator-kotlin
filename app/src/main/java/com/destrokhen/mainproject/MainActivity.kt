@@ -14,24 +14,24 @@ import com.fathzer.soft.javaluator.DoubleEvaluator
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    lateinit var vibrator : Vibrator
-    var canVibrate: Boolean = false
-    var milliseconds : Long = 0
+    private lateinit var vibrator : Vibrator
+    private var canVibrate: Boolean = false
+    private var milliseconds : Long = 0
 
-    var current : String = ""
-    var inputTotal : String = ""
+    private var current : String = ""
+    private var inputTotal : String = ""
 
-    lateinit var mainInput : TextView;
-    lateinit var mainAnswer : TextView;
+    private lateinit var mainInput : TextView;
+    private lateinit var mainAnswer : TextView;
 
-    var InsertSqrtValue : Boolean = false;
+    private var InsertSqrtValue : Boolean = false;
 
 
-    fun calculate(Input : String) :String {
-        var answer = ""
+    private fun calculate(Input : String) :String {
+        var answer: String = ""
         try {
             var x = DoubleEvaluator().evaluate(Input)
-            x = String.format("%."+SettingsValue.SettingsPresition+"f", x).toDouble()
+            x = String.format("%."+SettingsValue.SettingsPrecision+"f", x).toDouble()
             if (x % 1.0 == 0.0) {
                 answer = x.toInt().toString()
             } else {
@@ -43,13 +43,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         return answer
     }
 
+    @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         canVibrate = vibrator.hasVibrator()
-        milliseconds = (SettingsValue.VibroType*100).toLong()
+        milliseconds = (SettingsValue.VibratoType*100).toLong()
 
         val button : ImageView = findViewById<ImageView>(R.id.button_settings)
         var buttonHistory : ImageView = findViewById<ImageView>(R.id.history_button)
@@ -80,11 +81,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<TextView>(R.id.equalAnswer).setOnClickListener(this)   // =
         findViewById<TextView>(R.id.dot).setOnClickListener(this)           // .
 
-        val input: TextView = findViewById<TextView>(R.id.input)
-        val answer : TextView = findViewById<TextView>(R.id.answer)
-        //input.setText("sss")
-
-
         buttonHistory.setOnClickListener {
             openHistory()
         }
@@ -97,8 +93,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         if (SettingsValue.InputV.isNotEmpty()) {
-            mainInput.setText(SettingsValue.InputV)
-            mainAnswer.setText(SettingsValue.AnswerV)
+            mainInput.text = SettingsValue.InputV
+            mainAnswer.text = SettingsValue.AnswerV
             inputTotal = SettingsValue.InputV
             SettingsValue.AnswerV = ""
             SettingsValue.InputV = ""
@@ -107,14 +103,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun openHistory() {
-        //Toast.makeText(this, "История", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, HistoryActivity::class.java)
 
-        if (canVibrate && SettingsValue.VibroType > 0) {
+        if (canVibrate && SettingsValue.VibratoType > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 vibrator.vibrate(
                     VibrationEffect.createOneShot(
-                        (SettingsValue.VibroType*100).toLong(),
+                        (SettingsValue.VibratoType*100).toLong(),
                         VibrationEffect.DEFAULT_AMPLITUDE
                     )
                 )
@@ -126,16 +121,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun openSettings() {
-        //Toast.makeText(this, "Нажал на настройки", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, SettingsActivity::class.java)
-        //intent.putExtra(SettingsActivity.PRECISION_SETTINGS_INP, PRECISION_SETTINGS)
-        //startActivityForResult(intent, SettingsActivity.PRECISION_SETTINGS_REQ)
 
-        if (canVibrate && SettingsValue.VibroType != 0) {
+        if (canVibrate && SettingsValue.VibratoType != 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 vibrator.vibrate(
                     VibrationEffect.createOneShot(
-                        (SettingsValue.VibroType*100).toLong(),
+                        (SettingsValue.VibratoType*100).toLong(),
                         VibrationEffect.DEFAULT_AMPLITUDE
                     )
                 )
@@ -154,17 +146,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 if(current.isNotEmpty() && (current[current.length-1] in '0'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
                     inputTotal += current
                     current = "^"
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
                 } else if (inputTotal.isNotEmpty() && (inputTotal[inputTotal.length-1] in '0'..'9' || inputTotal[inputTotal.length-1] == ')') && inputTotal[inputTotal.length-1] != '.') {
                     current = "^"
-                    mainInput.setText(inputTotal+current)
+                    mainInput.text = inputTotal+current
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -176,14 +168,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.clear -> {
                 current = ""
                 inputTotal = ""
-                mainInput.setText("")
-                mainAnswer.setText("")
+                mainInput.text = ""
+                mainAnswer.text = ""
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -194,36 +186,40 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.equalAnswer -> {
                 if(inputTotal.isNotEmpty() || current.isNotEmpty()) {
-                    var total = inputTotal + current
-                    var result = calculate(total)
-                    if (result == "none") {
-                        Toast.makeText(this, "Ошибка в вычислениях", Toast.LENGTH_SHORT).show()
-                    } else if (result == "Infinity") {
-                        HistoryObj.ListHistory.add(ObjectHistory(total,"ထ"))
-                        mainAnswer.setText("ထ")
-                        mainInput.setText("")
-                        inputTotal = ""
-                        current = ""
-                    } else  if (result == "NaN") {
-                        HistoryObj.ListHistory.add(ObjectHistory(total,"Не число!"))
-                        mainAnswer.setText("Не число!")
-                        mainInput.setText("")
-                        inputTotal = ""
-                        current = ""
-                    } else {
-                        HistoryObj.ListHistory.add(ObjectHistory(total,result))
-                        mainAnswer.setText(result)
-                        mainInput.setText("")
-                        inputTotal = ""
-                        current = ""
+                    val total = inputTotal + current
+                    when (val result = calculate(total)) {
+                        "none" -> {
+                            Toast.makeText(this, "Ошибка в вычислениях", Toast.LENGTH_SHORT).show()
+                        }
+                        "Infinity" -> {
+                            HistoryObj.ListHistory.add(ObjectHistory(total,"ထ"))
+                            mainAnswer.text = "ထ"
+                            mainInput.text = ""
+                            inputTotal = ""
+                            current = ""
+                        }
+                        "NaN" -> {
+                            HistoryObj.ListHistory.add(ObjectHistory(total,"Не число!"))
+                            mainAnswer.text = "Не число!"
+                            mainInput.text = ""
+                            inputTotal = ""
+                            current = ""
+                        }
+                        else -> {
+                            HistoryObj.ListHistory.add(ObjectHistory(total,result))
+                            mainAnswer.text = result
+                            mainInput.text = ""
+                            inputTotal = ""
+                            current = ""
+                        }
                     }
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -234,31 +230,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.sqrt -> {
                 if (current.isNotEmpty() && inputTotal.isEmpty() && current[current.length - 1] != '.') {
-                    current = "(" + current + ")^0.5"
-                    mainInput.setText(inputTotal + current)
+                    current = "($current)^0.5"
+                    mainInput.text = inputTotal + current
                 } else if (current.isNotEmpty() && inputTotal.isNotEmpty()) {
                     val prop = current.substring(0, 1)
                     current = current.substring(1, current.length)
                     if (current.isEmpty()) {
-                        current = prop+"("
+                        current = "$prop("
                         InsertSqrtValue = true;
                         Toast.makeText(this, "Когда закончите вбивать выражение поставиьте )", Toast.LENGTH_SHORT).show()
                     } else {
-                        current = prop + "("+current+")^0.5"
+                        current = "$prop($current)^0.5"
                     }
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
                 }else if (current.isEmpty()) {
                     current += "("
                     InsertSqrtValue = true;
                     Toast.makeText(this, "Когда закончите вбивать выражение поставиьте )", Toast.LENGTH_SHORT).show()
-                    mainInput.setText(inputTotal+current)
+                    mainInput.text = inputTotal+current
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -271,23 +267,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 if (current.isNotEmpty() && (current[current.length - 1] in '0'..'9' || current[current.length - 1] == ')') && current[current.length - 1] != '.') {
                     inputTotal += current
                     current = "-"
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
                 } else if (current.isEmpty() || current.length == 1 && current[current.length - 1] !in '0'..'9') {
                     current += "-"
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
                 } else if (current.isNotEmpty() && current[current.length - 1] == '(') {
                     current += "-"
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
                 }else if (inputTotal.isNotEmpty() && (inputTotal[inputTotal.length-1] in '0'..'9' || inputTotal[inputTotal.length-1] == ')') && inputTotal[inputTotal.length-1] != '.') {
                     current = "-"
-                    mainInput.setText(inputTotal+current)
+                    mainInput.text = inputTotal+current
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -300,17 +296,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 if(current.isNotEmpty() && (current[current.length-1] in '0'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
                     inputTotal += current
                     current = "+"
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
                 } else if (inputTotal.isNotEmpty() && (inputTotal[inputTotal.length-1] in '0'..'9' || inputTotal[inputTotal.length-1] == ')') && inputTotal[inputTotal.length-1] != '.') {
                     current = "+"
-                    mainInput.setText(inputTotal+current)
+                    mainInput.text = inputTotal+current
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -323,17 +319,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 if(current.isNotEmpty() && (current[current.length-1] in '0'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
                     inputTotal += current
                     current = "/"
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
                 } else if (inputTotal.isNotEmpty() && (inputTotal[inputTotal.length-1] in '0'..'9' || inputTotal[inputTotal.length-1] == ')') && inputTotal[inputTotal.length-1] != '.') {
                     current = "/"
-                    mainInput.setText(inputTotal+current)
+                    mainInput.text = inputTotal+current
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -346,17 +342,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 if(current.isNotEmpty() && (current[current.length-1] in '0'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
                     inputTotal += current
                     current = "*"
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
                 } else if (inputTotal.isNotEmpty() && (inputTotal[inputTotal.length-1] in '0'..'9' || inputTotal[inputTotal.length-1] == ')') && inputTotal[inputTotal.length-1] != '.') {
                     current = "*"
-                    mainInput.setText(inputTotal+current)
+                    mainInput.text = inputTotal+current
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -373,25 +369,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     }
 
                     current = current.substring(0, current.length - 1)
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
 
 
                 } else if (inputTotal.isNotEmpty()){
 
-                    val board = current.substring(0,1)
+                    val board = inputTotal.substring(inputTotal.length-1,inputTotal.length)
                     if (board == "(" && InsertSqrtValue) {
                         InsertSqrtValue = false
                     }
 
                     inputTotal = inputTotal.substring(0, inputTotal.length - 1)
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -401,15 +397,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.scoupStart -> {
-                // TODO поставить проверку что предыдущее символ знак какой-то
                 current += "("
-                mainInput.setText(inputTotal + current)
+                mainInput.text = inputTotal + current
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -419,22 +414,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.scoupEnd -> {
-                // TODO поставить проверку что предыдущее символ знак какой-то
-
                 if(InsertSqrtValue) {
                     current += ")^0.5"
                     InsertSqrtValue = false;
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
                 } else {
                     current += ")"
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -446,14 +439,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.dot -> {
                 if (current.isNotEmpty() && current[current.length-1] in '0'..'9' && current !in ".") {
                     current += "."
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -466,20 +459,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.b0 -> {
                 if (current.isNotEmpty() && (current[current.length-1] in '0'..'9' || current[current.length-1] == '.')) {
                     current += "0"
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
                 } else {
                     current += "0."
-                    mainInput.setText(inputTotal + current)
+                    mainInput.text = inputTotal + current
                 }
-                if (mainAnswer.text.length > 0) {
-                    mainAnswer.setText("")
+                if (mainAnswer.text.isNotEmpty()) {
+                    mainAnswer.text = ""
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -490,16 +483,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.b1 -> {
                 current += "1"
-                mainInput.setText(inputTotal + current)
-                if (mainAnswer.text.length > 0) {
-                    mainAnswer.setText("")
+                mainInput.text = inputTotal + current
+                if (mainAnswer.text.isNotEmpty()) {
+                    mainAnswer.text = ""
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -510,16 +503,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.b2 -> {
                 current += "2"
-                mainInput.setText(inputTotal + current)
-                if (mainAnswer.text.length > 0) {
-                    mainAnswer.setText("")
+                mainInput.text = inputTotal + current
+                if (mainAnswer.text.isNotEmpty()) {
+                    mainAnswer.text = ""
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -530,16 +523,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.b3 -> {
                 current += "3"
-                mainInput.setText(inputTotal + current)
-                if (mainAnswer.text.length > 0) {
-                    mainAnswer.setText("")
+                mainInput.text = inputTotal + current
+                if (mainAnswer.text.isNotEmpty()) {
+                    mainAnswer.text = ""
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -550,16 +543,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.b4 -> {
                 current += "4"
-                mainInput.setText(inputTotal + current)
-                if (mainAnswer.text.length > 0) {
-                    mainAnswer.setText("")
+                mainInput.text = inputTotal + current
+                if (mainAnswer.text.isNotEmpty()) {
+                    mainAnswer.text = ""
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -570,16 +563,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.b5 -> {
                 current += "5"
-                mainInput.setText(inputTotal + current)
-                if (mainAnswer.text.length > 0) {
-                    mainAnswer.setText("")
+                mainInput.text = inputTotal + current
+                if (mainAnswer.text.isNotEmpty()) {
+                    mainAnswer.text = ""
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -590,16 +583,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.b6 -> {
                 current += "6"
-                mainInput.setText(inputTotal + current)
-                if (mainAnswer.text.length > 0) {
-                    mainAnswer.setText("")
+                mainInput.text = inputTotal + current
+                if (mainAnswer.text.isNotEmpty()) {
+                    mainAnswer.text = ""
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -610,16 +603,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.b7 -> {
                 current += "7"
-                mainInput.setText(inputTotal + current)
-                if (mainAnswer.text.length > 0) {
-                    mainAnswer.setText("")
+                mainInput.text = inputTotal + current
+                if (mainAnswer.text.isNotEmpty()) {
+                    mainAnswer.text = ""
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -630,16 +623,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.b8 -> {
                 current += "8"
-                mainInput.setText(inputTotal + current)
-                if (mainAnswer.text.length > 0) {
-                    mainAnswer.setText("")
+                mainInput.text = inputTotal + current
+                if (mainAnswer.text.isNotEmpty()) {
+                    mainAnswer.text = ""
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -650,16 +643,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.b9 -> {
                 current += "9"
-                mainInput.setText(inputTotal + current)
-                if (mainAnswer.text.length > 0) {
-                    mainAnswer.setText("")
+                mainInput.text = inputTotal + current
+                if (mainAnswer.text.isNotEmpty()) {
+                    mainAnswer.text = ""
                 }
 
-                if (canVibrate && SettingsValue.VibroType != 0) {
+                if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibroType*100).toLong(),
+                                (SettingsValue.VibratoType*100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )

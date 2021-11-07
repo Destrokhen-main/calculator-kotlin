@@ -1,8 +1,6 @@
 package com.destrokhen.mainproject
 
 import android.content.Context
-import android.content.Intent
-import android.media.audiofx.Equalizer
 import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
@@ -11,13 +9,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import kotlin.math.roundToInt
 
 class SettingsActivity : AppCompatActivity() , SeekBar.OnSeekBarChangeListener {
-//    companion object {
-//        const val PRECISION_SETTINGS_INP = 2
-//    }
-
-
     lateinit var vibrator : Vibrator
     var canVibrate: Boolean = false
     var milliseconds : Long = 0
@@ -29,16 +23,14 @@ class SettingsActivity : AppCompatActivity() , SeekBar.OnSeekBarChangeListener {
 
         vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         canVibrate = vibrator.hasVibrator()
-        milliseconds = (SettingsValue.VibroType*100).toLong()
+        milliseconds = (SettingsValue.VibratoType*100).toLong()
 
-        //var data = intent.getIntExtra(PRECISION_SETTINGS, 2)
-        //Toast.makeText(this, "$data", Toast.LENGTH_SHORT).show()
-        var buttonBack : ImageView = findViewById<ImageView>(R.id.back_to_main)
+        val buttonBack : ImageView = findViewById(R.id.back_to_main)
 
-        findViewById<EditText>(R.id.Number_Point_Precision).setText(SettingsValue.SettingsPresition.toString())
-        findViewById<TextView>(R.id.seekBarText).setText(SettingsValue.VibroType.toString())
+        findViewById<EditText>(R.id.Number_Point_Precision).setText(SettingsValue.SettingsPrecision.toString())
+        findViewById<TextView>(R.id.seekBarText).text = SettingsValue.VibratoType.toString()
 
-        findViewById<SeekBar>(R.id.seekbar_vibro).setProgress(SettingsValue.VibroType.toInt()*10)
+        findViewById<SeekBar>(R.id.seekbar_vibro).progress = SettingsValue.VibratoType*10
         findViewById<SeekBar>(R.id.seekbar_vibro).setOnSeekBarChangeListener(this)
 
         findViewById<EditText>(R.id.Number_Point_Precision).addTextChangedListener(object : TextWatcher{
@@ -49,18 +41,19 @@ class SettingsActivity : AppCompatActivity() , SeekBar.OnSeekBarChangeListener {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                if (findViewById<EditText>(R.id.Number_Point_Precision).text.toString().isNotEmpty())
-                    SettingsValue.SettingsPresition = findViewById<EditText>(R.id.Number_Point_Precision).text.toString().toInt()
+                if (findViewById<EditText>(R.id.Number_Point_Precision).text.toString().isNotEmpty()) {
+                    SettingsValue.SettingsPrecision = findViewById<EditText>(R.id.Number_Point_Precision).text.toString().toInt()
+                }
             }
 
         })
 
         buttonBack.setOnClickListener {
-            if (canVibrate && SettingsValue.VibroType > 0) {
+            if (canVibrate && SettingsValue.VibratoType > 0) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     vibrator.vibrate(
                         VibrationEffect.createOneShot(
-                            (SettingsValue.VibroType*100).toLong(),
+                            (SettingsValue.VibratoType*100).toLong(),
                             VibrationEffect.DEFAULT_AMPLITUDE
                         )
                     )
@@ -73,20 +66,20 @@ class SettingsActivity : AppCompatActivity() , SeekBar.OnSeekBarChangeListener {
     }
 
     override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-        findViewById<TextView>(R.id.seekBarText).setText(SettingsValue.VibroType.toString())
-        SettingsValue.VibroType = Math.round(p1 / 10.0).toInt()
-        findViewById<SeekBar>(R.id.seekbar_vibro).setProgress(SettingsValue.VibroType*10)
+        findViewById<TextView>(R.id.seekBarText).text = SettingsValue.VibratoType.toString()
+        SettingsValue.VibratoType = (p1 / 10.0).roundToInt()
+        findViewById<SeekBar>(R.id.seekbar_vibro).progress = SettingsValue.VibratoType*10
     }
 
     override fun onStartTrackingTouch(p0: SeekBar?) {
     }
 
     override fun onStopTrackingTouch(p0: SeekBar?) {
-        if (canVibrate && SettingsValue.VibroType > 0) {
+        if (canVibrate && SettingsValue.VibratoType > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 vibrator.vibrate(
                     VibrationEffect.createOneShot(
-                        (SettingsValue.VibroType*100).toLong(),
+                        (SettingsValue.VibratoType*100).toLong(),
                         VibrationEffect.DEFAULT_AMPLITUDE
                     )
                 )
@@ -94,5 +87,7 @@ class SettingsActivity : AppCompatActivity() , SeekBar.OnSeekBarChangeListener {
                 vibrator.vibrate(milliseconds)
             }
         }
+
+        findViewById<TextView>(R.id.seekBarText).text = SettingsValue.VibratoType.toString()
     }
 }

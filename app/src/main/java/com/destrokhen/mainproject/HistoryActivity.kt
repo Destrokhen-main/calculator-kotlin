@@ -75,7 +75,7 @@ class HistoryActivity : AppCompatActivity() {
 
         vibrator = this.getSystemService(VIBRATOR_SERVICE) as Vibrator
         canVibrate = vibrator.hasVibrator()
-        milliseconds = (SettingsValue.VibroType*100).toLong()
+        milliseconds = (SettingsValue.VibratoType*100).toLong()
 
         val listView: ListView = findViewById<ListView>(R.id.list_history)
 
@@ -83,16 +83,16 @@ class HistoryActivity : AppCompatActivity() {
 
         val adapter = HistoryItemAdapter(this,catNames)
 
-        listView.setAdapter(adapter)
+        listView.adapter = adapter
 
         var buttonBack : ImageView = findViewById<ImageView>(R.id.back_to_main2)
 
         buttonBack.setOnClickListener {
-            if (canVibrate && SettingsValue.VibroType > 0) {
+            if (canVibrate && SettingsValue.VibratoType > 0) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     vibrator.vibrate(
                         VibrationEffect.createOneShot(
-                            (SettingsValue.VibroType*100).toLong(),
+                            (SettingsValue.VibratoType*100).toLong(),
                             VibrationEffect.DEFAULT_AMPLITUDE
                         )
                     )

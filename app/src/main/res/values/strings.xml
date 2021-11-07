@@ -4,4 +4,11 @@
     <string name="history_name">История</string>
     <string name="setting_precision">Точность вычисления (кол. чисел после запятой)</string>
     <string name="setting_vibro">Настройка виброотклика</string>
+    <string name="back">Back</string>
+    <string name="BackBoard">(</string>
+    <string name="FordrBoard">)</string>
+    <string name="Clear">C</string>
+    <string name="pow">⌃</string>
+    <string name="sqrt">√</string>
+    <string name="div">/</string>
 </resources>

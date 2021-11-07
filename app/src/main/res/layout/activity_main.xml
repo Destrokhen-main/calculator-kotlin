@@ -68,21 +68,21 @@
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="Back" />
+                android:text="@string/back" />
 
             <TextView
                 android:id="@+id/scoupStart"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="(" />
+                android:text="@string/BackBoard" />
 
             <TextView
                 android:id="@+id/scoupEnd"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text=")" />
+                android:text="@string/FordrBoard" />
 
         </LinearLayout>
 
@@ -96,28 +96,28 @@
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="C" />
+                android:text="@string/Clear" />
 
             <TextView
                 android:id="@+id/pow"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="⌃" />
+                android:text="@string/pow" />
 
             <TextView
                 android:id="@+id/sqrt"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="√" />
+                android:text="@string/sqrt" />
 
             <TextView
                 android:id="@+id/div"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="/" />
+                android:text="@string/div" />
         </LinearLayout>
 
         <LinearLayout
@@ -130,28 +130,32 @@
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="1" />
+                android:text="1"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/b2"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="2" />
+                android:text="2"
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/b3"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="3" />
+                android:text="3"
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/x"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="x" />
+                android:text="x"
+                tools:ignore="HardcodedText"/>
         </LinearLayout>
 
         <LinearLayout
@@ -164,28 +168,32 @@
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="4" />
+                android:text="4"
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/b5"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="5" />
+                android:text="5"
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/b6"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="6" />
+                android:text="6"
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/minus"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="-" />
+                android:text="-"
+                tools:ignore="HardcodedText"/>
         </LinearLayout>
 
         <LinearLayout
@@ -198,28 +206,32 @@
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="7" />
+                android:text="7"
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/b8"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="8" />
+                android:text="8"
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/b9"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="9" />
+                android:text="9"
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/plus"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="+" />
+                android:text="+"
+                tools:ignore="HardcodedText"/>
         </LinearLayout>
 
         <LinearLayout
@@ -232,24 +244,24 @@
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="." />
+                android:text="."
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/b0"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
-                android:text="0" />
+                android:text="0"
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/equalAnswer"
                 style="@style/MainButton"
                 android:layout_width="wrap_content"
                 android:layout_weight="2"
-                android:text="=" />
+                android:text="="
+                tools:ignore="HardcodedText"/>
         </LinearLayout>
     </LinearLayout>
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

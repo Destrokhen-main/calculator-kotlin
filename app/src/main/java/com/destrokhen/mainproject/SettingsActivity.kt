@@ -7,6 +7,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
@@ -39,6 +41,19 @@ class SettingsActivity : AppCompatActivity() , SeekBar.OnSeekBarChangeListener {
         findViewById<SeekBar>(R.id.seekbar_vibro).setProgress(SettingsValue.VibroType.toInt()*10)
         findViewById<SeekBar>(R.id.seekbar_vibro).setOnSeekBarChangeListener(this)
 
+        findViewById<EditText>(R.id.Number_Point_Precision).addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                if (findViewById<EditText>(R.id.Number_Point_Precision).text.toString().isNotEmpty())
+                    SettingsValue.SettingsPresition = findViewById<EditText>(R.id.Number_Point_Precision).text.toString().toInt()
+            }
+
+        })
 
         buttonBack.setOnClickListener {
             if (canVibrate && SettingsValue.VibroType > 0) {

@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/titleH"
         android:layout_width="197dp"
-        android:layout_height="29dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="TextView"
@@ -19,7 +19,7 @@
     <TextView
         android:id="@+id/answerH"
         android:layout_width="198dp"
-        android:layout_height="25dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="1dp"
         android:text="TextView"
@@ -29,7 +29,7 @@
     <TextView
         android:id="@+id/dataH"
         android:layout_width="172dp"
-        android:layout_height="28dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:gravity="end"

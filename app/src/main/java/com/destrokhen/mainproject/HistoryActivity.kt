@@ -1,5 +1,6 @@
 package com.destrokhen.mainproject
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -11,13 +12,12 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatterBuilder
 
 
-class RecipeAdapter(private val context: Context,
-                    private val dataSource: MutableList<ObjectHistory>) : BaseAdapter() {
+class HistoryItemAdapter(private val context: Context,
+                         private val dataSource: MutableList<ObjectHistory>) : BaseAdapter() {
 
-    private val inflater: LayoutInflater =
+    private val objectList: LayoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getCount(): Int {
@@ -32,8 +32,9 @@ class RecipeAdapter(private val context: Context,
         return position.toLong()
     }
 
+    @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val rowView = inflater.inflate(R.layout.item_history, parent, false)
+        val rowView = objectList.inflate(R.layout.item_history, parent, false)
 
         val titleTextView = rowView.findViewById<TextView>(R.id.titleH)
 
@@ -55,6 +56,7 @@ class RecipeAdapter(private val context: Context,
             SettingsValue.InputV = recipe.Input
             SettingsValue.AnswerV = recipe.answer
             Toast.makeText(context, "Сохранил, можете вернуться", Toast.LENGTH_SHORT).show()
+
         }
         return rowView
     }
@@ -79,7 +81,7 @@ class HistoryActivity : AppCompatActivity() {
 
         val catNames = HistoryObj.ListHistory
 
-        val adapter = RecipeAdapter(this,catNames)
+        val adapter = HistoryItemAdapter(this,catNames)
 
         listView.setAdapter(adapter)
 

@@ -8,20 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.Log
 import android.view.View
 import android.widget.*
 import com.fathzer.soft.javaluator.DoubleEvaluator
 
-
-
-
 class MainActivity : AppCompatActivity(), View.OnClickListener {
-
-    companion object {
-        val INPUTV = "INPUTV"
-        val ANSWERV = "ANSWERV"
-    }
 
     lateinit var vibrator : Vibrator
     var canVibrate: Boolean = false
@@ -103,18 +94,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-
     override fun onResume() {
         super.onResume()
         if (SettingsValue.InputV.isNotEmpty()) {
             mainInput.setText(SettingsValue.InputV)
             mainAnswer.setText(SettingsValue.AnswerV)
-
+            inputTotal = SettingsValue.InputV
             SettingsValue.AnswerV = ""
             SettingsValue.InputV = ""
         }
 
     }
+
     private fun openHistory() {
         //Toast.makeText(this, "История", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, HistoryActivity::class.java)
@@ -160,11 +151,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0?.id){
             R.id.pow -> {
-                if(current.isNotEmpty() && (current[current.length-1] in '1'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
+                if(current.isNotEmpty() && (current[current.length-1] in '0'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
                     inputTotal += current
                     current = "^"
                     mainInput.setText(inputTotal + current)
-                } else if (inputTotal.isNotEmpty() && (current[current.length-1] in '1'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
+                } else if (inputTotal.isNotEmpty() && (current[current.length-1] in '0'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
                     current = "^"
                     mainInput.setText(inputTotal+current)
                 }
@@ -207,6 +198,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     var result = calculate(total)
                     if (result == "none") {
                         Toast.makeText(this, "Ошибка в вычислениях", Toast.LENGTH_SHORT).show()
+                    } else if (result == "Infinity") {
+                        HistoryObj.ListHistory.add(ObjectHistory(total,"ထ"))
+                        mainAnswer.setText("ထ")
+                        mainInput.setText("")
+                        inputTotal = ""
+                        current = ""
                     } else {
                         HistoryObj.ListHistory.add(ObjectHistory(total,result))
                         mainAnswer.setText(result)
@@ -265,17 +262,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.minus -> {
-                if (current.isNotEmpty() && (current[current.length - 1] in '1'..'9' || current[current.length - 1] == ')') && current[current.length - 1] != '.') {
+                if (current.isNotEmpty() && (current[current.length - 1] in '0'..'9' || current[current.length - 1] == ')') && current[current.length - 1] != '.') {
                     inputTotal += current
                     current = "-"
                     mainInput.setText(inputTotal + current)
-                } else if (current.isEmpty() || current.length == 1 && current[current.length - 1] !in '1'..'9') {
+                } else if (current.isEmpty() || current.length == 1 && current[current.length - 1] !in '0'..'9') {
                     current += "-"
                     mainInput.setText(inputTotal + current)
                 } else if (current.isNotEmpty() && current[current.length - 1] == '(') {
                     current += "-"
                     mainInput.setText(inputTotal + current)
-                }else if (inputTotal.isNotEmpty() && (inputTotal[inputTotal.length-1] in '1'..'9' || inputTotal[inputTotal.length-1] == ')') && inputTotal[inputTotal.length-1] != '.') {
+                }else if (inputTotal.isNotEmpty() && (inputTotal[inputTotal.length-1] in '0'..'9' || inputTotal[inputTotal.length-1] == ')') && inputTotal[inputTotal.length-1] != '.') {
                     current = "-"
                     mainInput.setText(inputTotal+current)
                 }
@@ -294,11 +291,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.plus -> {
-                if(current.isNotEmpty() && (current[current.length-1] in '1'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
+                if(current.isNotEmpty() && (current[current.length-1] in '0'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
                     inputTotal += current
                     current = "+"
                     mainInput.setText(inputTotal + current)
-                } else if (inputTotal.isNotEmpty() && (inputTotal[inputTotal.length-1] in '1'..'9' || inputTotal[inputTotal.length-1] == ')') && inputTotal[inputTotal.length-1] != '.') {
+                } else if (inputTotal.isNotEmpty() && (inputTotal[inputTotal.length-1] in '0'..'9' || inputTotal[inputTotal.length-1] == ')') && inputTotal[inputTotal.length-1] != '.') {
                     current = "+"
                     mainInput.setText(inputTotal+current)
                 }
@@ -317,11 +314,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.div -> {
-                if(current.isNotEmpty() && (current[current.length-1] in '1'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
+                if(current.isNotEmpty() && (current[current.length-1] in '0'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
                     inputTotal += current
                     current = "/"
                     mainInput.setText(inputTotal + current)
-                } else if (inputTotal.isNotEmpty() && (inputTotal[inputTotal.length-1] in '1'..'9' || inputTotal[inputTotal.length-1] == ')') && inputTotal[inputTotal.length-1] != '.') {
+                } else if (inputTotal.isNotEmpty() && (inputTotal[inputTotal.length-1] in '0'..'9' || inputTotal[inputTotal.length-1] == ')') && inputTotal[inputTotal.length-1] != '.') {
                     current = "/"
                     mainInput.setText(inputTotal+current)
                 }
@@ -340,11 +337,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.x -> {
-                if(current.isNotEmpty() && (current[current.length-1] in '1'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
+                if(current.isNotEmpty() && (current[current.length-1] in '0'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
                     inputTotal += current
                     current = "*"
                     mainInput.setText(inputTotal + current)
-                } else if (inputTotal.isNotEmpty() && (inputTotal[inputTotal.length-1] in '1'..'9' || inputTotal[inputTotal.length-1] == ')') && inputTotal[inputTotal.length-1] != '.') {
+                } else if (inputTotal.isNotEmpty() && (inputTotal[inputTotal.length-1] in '0'..'9' || inputTotal[inputTotal.length-1] == ')') && inputTotal[inputTotal.length-1] != '.') {
                     current = "*"
                     mainInput.setText(inputTotal+current)
                 }
@@ -428,7 +425,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.dot -> {
-                if (current.isNotEmpty() && current[current.length-1] in '1'..'9' && current !in ".") {
+                if (current.isNotEmpty() && current[current.length-1] in '0'..'9' && current !in ".") {
                     current += "."
                     mainInput.setText(inputTotal + current)
                 }
@@ -448,7 +445,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.b0 -> {
-                if (current.isNotEmpty() && (current[current.length-1] in '1'..'9' || current[current.length-1] == '.')) {
+                if (current.isNotEmpty() && (current[current.length-1] in '0'..'9' || current[current.length-1] == '.')) {
                     current += "0"
                     mainInput.setText(inputTotal + current)
                 } else {

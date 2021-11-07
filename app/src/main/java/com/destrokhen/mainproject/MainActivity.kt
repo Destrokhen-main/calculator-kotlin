@@ -155,7 +155,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     inputTotal += current
                     current = "^"
                     mainInput.setText(inputTotal + current)
-                } else if (inputTotal.isNotEmpty() && (current[current.length-1] in '0'..'9' || current[current.length-1] == ')') && current[current.length-1] != '.') {
+                } else if (inputTotal.isNotEmpty() && (inputTotal[inputTotal.length-1] in '0'..'9' || inputTotal[inputTotal.length-1] == ')') && inputTotal[inputTotal.length-1] != '.') {
                     current = "^"
                     mainInput.setText(inputTotal+current)
                 }
@@ -201,6 +201,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     } else if (result == "Infinity") {
                         HistoryObj.ListHistory.add(ObjectHistory(total,"ထ"))
                         mainAnswer.setText("ထ")
+                        mainInput.setText("")
+                        inputTotal = ""
+                        current = ""
+                    } else  if (result == "NaN") {
+                        HistoryObj.ListHistory.add(ObjectHistory(total,"Не число!"))
+                        mainAnswer.setText("Не число!")
                         mainInput.setText("")
                         inputTotal = ""
                         current = ""
@@ -361,9 +367,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.back -> {
                 if(current.isNotEmpty()) {
+                    val board = current.substring(0,1)
+                    if (board == "(" && InsertSqrtValue) {
+                        InsertSqrtValue = false
+                    }
+
                     current = current.substring(0, current.length - 1)
                     mainInput.setText(inputTotal + current)
+
+
                 } else if (inputTotal.isNotEmpty()){
+
+                    val board = current.substring(0,1)
+                    if (board == "(" && InsertSqrtValue) {
+                        InsertSqrtValue = false
+                    }
+
                     inputTotal = inputTotal.substring(0, inputTotal.length - 1)
                     mainInput.setText(inputTotal + current)
                 }

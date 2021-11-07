@@ -374,8 +374,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                 } else if (inputTotal.isNotEmpty()){
 
-                    val board = inputTotal.substring(inputTotal.length-1,inputTotal.length)
-                    if (board == "(" && InsertSqrtValue) {
+                    if (current.isNotEmpty()) {
+                        val board = current.substring(0, 1)
+                        if (board == "(" && InsertSqrtValue) {
+                            InsertSqrtValue = false
+                        }
+                    } else if (current.isEmpty() && InsertSqrtValue) {
                         InsertSqrtValue = false
                     }
 

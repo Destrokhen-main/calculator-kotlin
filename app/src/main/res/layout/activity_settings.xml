@@ -40,10 +40,11 @@
     <EditText
         android:id="@+id/Number_Point_Precision"
         android:layout_width="372dp"
-        android:layout_height="44dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="108dp"
         android:ems="10"
         android:inputType="number"
+        android:paddingStart="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"

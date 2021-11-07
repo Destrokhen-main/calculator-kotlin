@@ -32,7 +32,7 @@ class HistoryItemAdapter(private val context: Context,
         return position.toLong()
     }
 
-    @SuppressLint("ViewHolder")
+    @SuppressLint("ViewHolder", "SimpleDateFormat")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val rowView = objectList.inflate(R.layout.item_history, parent, false)
 

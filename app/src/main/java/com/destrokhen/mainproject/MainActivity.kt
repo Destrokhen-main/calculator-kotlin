@@ -454,7 +454,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             }
             R.id.dot -> {
-                if (current.isNotEmpty() && current[current.length-1] in '0'..'9' && current !in ".") {
+                if (current.isNotEmpty() && current[current.length-1] in '0'..'9' && !current.contains(".")) {
                     current += "."
                     mainInput.text = inputTotal + current
                 }

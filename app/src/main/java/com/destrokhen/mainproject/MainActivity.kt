@@ -195,23 +195,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         "Infinity" -> {
                             HistoryObj.ListHistory.add(ObjectHistory(total,"ထ"))
                             mainAnswer.text = "ထ"
-                            mainInput.text = ""
-                            inputTotal = ""
-                            current = ""
+                            //mainInput.text = ""
+                            //inputTotal = ""
+                            //current = ""
                         }
                         "NaN" -> {
                             HistoryObj.ListHistory.add(ObjectHistory(total,"Не число!"))
                             mainAnswer.text = "Не число!"
-                            mainInput.text = ""
-                            inputTotal = ""
-                            current = ""
+                            //mainInput.text = ""
+                            //inputTotal = ""
+                            //current = ""
                         }
                         else -> {
                             HistoryObj.ListHistory.add(ObjectHistory(total,result))
                             mainAnswer.text = result
-                            mainInput.text = ""
-                            inputTotal = ""
-                            current = ""
+                            //mainInput.text = ""
+                            //inputTotal = ""
+                            //current = ""
                         }
                     }
                 }

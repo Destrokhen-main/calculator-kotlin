@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Калькулятор</string>
+    <string name="app_name">iКалькулятор</string>
     <string name="setting_name">Настройки</string>
     <string name="history_name">История</string>
     <string name="setting_precision">Точность вычисления (кол. чисел после запятой)</string>

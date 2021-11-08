@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             var x = DoubleEvaluator().evaluate(Input)
             x = String.format("%."+SettingsValue.SettingsPrecision+"f", x).toDouble()
             if (x % 1.0 == 0.0) {
-                answer = x.toInt().toString()
+                answer = x.toLong().toString()
             } else {
                 answer = x.toString()
             }
@@ -170,6 +170,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 inputTotal = ""
                 mainInput.text = ""
                 mainAnswer.text = ""
+                InsertSqrtValue = false
 
                 if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -189,7 +190,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     val total = inputTotal + current
                     when (val result = calculate(total)) {
                         "none" -> {
-                            Toast.makeText(this, "Ошибка в вычислениях", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Ошибка, выражение записано неправильно", Toast.LENGTH_SHORT).show()
                         }
                         "Infinity" -> {
                             HistoryObj.ListHistory.add(ObjectHistory(total,"ထ"))
@@ -238,7 +239,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     if (current.isEmpty()) {
                         current = "$prop("
                         InsertSqrtValue = true;
-                        Toast.makeText(this, "Когда закончите вбивать выражение поставиьте )", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Когда закончите вбивать выражение поставьте \")\"", Toast.LENGTH_SHORT).show()
                     } else {
                         current = "$prop($current)^0.5"
                     }
@@ -246,7 +247,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }else if (current.isEmpty()) {
                     current += "("
                     InsertSqrtValue = true;
-                    Toast.makeText(this, "Когда закончите вбивать выражение поставиьте )", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Когда закончите вбивать выражение поставьте \")\"", Toast.LENGTH_SHORT).show()
                     mainInput.text = inputTotal+current
                 }
 
@@ -418,20 +419,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.scoupEnd -> {
-                if(InsertSqrtValue) {
-                    current += ")^0.5"
-                    InsertSqrtValue = false;
-                    mainInput.text = inputTotal + current
-                } else {
-                    current += ")"
-                    mainInput.text = inputTotal + current
+                if (current.isNotEmpty()) {
+                    if (InsertSqrtValue && current[current.length - 1] in '0'..'9') {
+                        current += ")^0.5"
+                        InsertSqrtValue = false;
+                        mainInput.text = inputTotal + current
+                    } else if (current[current.length - 1] in '0'..'9') {
+                        current += ")"
+                        mainInput.text = inputTotal + current
+                    }
+                } else if (inputTotal.isNotEmpty()) {
+                    if (InsertSqrtValue && inputTotal[inputTotal.length - 1] in '0'..'9') {
+                        current += ")^0.5"
+                        InsertSqrtValue = false;
+                        mainInput.text = inputTotal + current
+                    } else if (inputTotal[inputTotal.length - 1] in '0'..'9') {
+                        current += ")"
+                        mainInput.text = inputTotal + current
+                    }
                 }
 
                 if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(
                             VibrationEffect.createOneShot(
-                                (SettingsValue.VibratoType*100).toLong(),
+                                (SettingsValue.VibratoType * 100).toLong(),
                                 VibrationEffect.DEFAULT_AMPLITUDE
                             )
                         )
@@ -439,6 +451,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         vibrator.vibrate(milliseconds)
                     }
                 }
+
             }
             R.id.dot -> {
                 if (current.isNotEmpty() && current[current.length-1] in '0'..'9' && current !in ".") {

@@ -199,6 +199,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                             //inputTotal = ""
                             //current = ""
                         }
+                        "-Infinity" -> {
+                            HistoryObj.ListHistory.add(ObjectHistory(total,"-ထ"))
+                            mainAnswer.text = "-ထ"
+                            //mainInput.text = ""
+                            //inputTotal = ""
+                            //current = ""
+                        }
                         "NaN" -> {
                             HistoryObj.ListHistory.add(ObjectHistory(total,"Не число!"))
                             mainAnswer.text = "Не число!"
@@ -230,7 +237,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.sqrt -> {
-                if (current.isNotEmpty() && inputTotal.isEmpty() && current[current.length - 1] != '.') {
+                if (current.isNotEmpty() && inputTotal.isEmpty() && current[current.length - 1] != '.' && current[current.length - 1] != '(') {
                     current = "($current)^0.5"
                     mainInput.text = inputTotal + current
                 } else if (current.isNotEmpty() && inputTotal.isNotEmpty()) {
@@ -240,10 +247,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         current = "$prop("
                         insertSqrtValue = true;
                         Toast.makeText(this, "Когда закончите вбивать выражение поставьте \")\"", Toast.LENGTH_SHORT).show()
-                    } else {
+                        mainInput.text = inputTotal + current
+                    } else if (current != "(") {
                         current = "$prop($current)^0.5"
+                        mainInput.text = inputTotal + current
                     }
-                    mainInput.text = inputTotal + current
                 }else if (current.isEmpty()) {
                     current += "("
                     insertSqrtValue = true;

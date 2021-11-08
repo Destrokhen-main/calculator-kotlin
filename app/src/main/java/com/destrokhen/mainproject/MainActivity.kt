@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var vibrator : Vibrator
     private var canVibrate: Boolean = false
-    private var milliseconds : Long = 0
+    var milliseconds : Long = 0
 
     private var current : String = ""
     private var inputTotal : String = ""
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mainInput : TextView;
     private lateinit var mainAnswer : TextView;
 
-    private var InsertSqrtValue : Boolean = false;
+    private var insertSqrtValue : Boolean = false;
 
 
     private fun calculate(Input : String) :String {
@@ -170,7 +170,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 inputTotal = ""
                 mainInput.text = ""
                 mainAnswer.text = ""
-                InsertSqrtValue = false
+                insertSqrtValue = false
 
                 if (canVibrate && SettingsValue.VibratoType != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -238,7 +238,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     current = current.substring(1, current.length)
                     if (current.isEmpty()) {
                         current = "$prop("
-                        InsertSqrtValue = true;
+                        insertSqrtValue = true;
                         Toast.makeText(this, "Когда закончите вбивать выражение поставьте \")\"", Toast.LENGTH_SHORT).show()
                     } else {
                         current = "$prop($current)^0.5"
@@ -246,7 +246,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     mainInput.text = inputTotal + current
                 }else if (current.isEmpty()) {
                     current += "("
-                    InsertSqrtValue = true;
+                    insertSqrtValue = true;
                     Toast.makeText(this, "Когда закончите вбивать выражение поставьте \")\"", Toast.LENGTH_SHORT).show()
                     mainInput.text = inputTotal+current
                 }
@@ -365,8 +365,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.back -> {
                 if(current.isNotEmpty()) {
                     val board = current.substring(0,1)
-                    if (board == "(" && InsertSqrtValue) {
-                        InsertSqrtValue = false
+                    if (board == "(" && insertSqrtValue) {
+                        insertSqrtValue = false
                     }
 
                     current = current.substring(0, current.length - 1)
@@ -377,11 +377,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                     if (current.isNotEmpty()) {
                         val board = current.substring(0, 1)
-                        if (board == "(" && InsertSqrtValue) {
-                            InsertSqrtValue = false
+                        if (board == "(" && insertSqrtValue) {
+                            insertSqrtValue = false
                         }
-                    } else if (current.isEmpty() && InsertSqrtValue) {
-                        InsertSqrtValue = false
+                    } else if (current.isEmpty() && insertSqrtValue) {
+                        insertSqrtValue = false
                     }
 
                     inputTotal = inputTotal.substring(0, inputTotal.length - 1)
@@ -420,18 +420,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.scoupEnd -> {
                 if (current.isNotEmpty()) {
-                    if (InsertSqrtValue && current[current.length - 1] in '0'..'9') {
+                    if (insertSqrtValue && current[current.length - 1] in '0'..'9') {
                         current += ")^0.5"
-                        InsertSqrtValue = false;
+                        insertSqrtValue = false;
                         mainInput.text = inputTotal + current
                     } else if (current[current.length - 1] in '0'..'9') {
                         current += ")"
                         mainInput.text = inputTotal + current
                     }
                 } else if (inputTotal.isNotEmpty()) {
-                    if (InsertSqrtValue && inputTotal[inputTotal.length - 1] in '0'..'9') {
+                    if (insertSqrtValue && inputTotal[inputTotal.length - 1] in '0'..'9') {
                         current += ")^0.5"
-                        InsertSqrtValue = false;
+                        insertSqrtValue = false;
                         mainInput.text = inputTotal + current
                     } else if (inputTotal[inputTotal.length - 1] in '0'..'9') {
                         current += ")"

@@ -65,8 +65,8 @@ class HistoryItemAdapter(private val context: Context,
 
 class HistoryActivity : AppCompatActivity() {
 
-    lateinit var vibrator : Vibrator
-    var canVibrate: Boolean = false
+    private lateinit var vibrator : Vibrator
+    private var canVibrate: Boolean = false
     var milliseconds : Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {

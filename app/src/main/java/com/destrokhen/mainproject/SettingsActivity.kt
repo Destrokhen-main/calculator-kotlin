@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlin.math.roundToInt
 
 class SettingsActivity : AppCompatActivity() , SeekBar.OnSeekBarChangeListener {
-    lateinit var vibrator : Vibrator
-    var canVibrate: Boolean = false
+    private lateinit var vibrator : Vibrator
+    private var canVibrate: Boolean = false
     var milliseconds : Long = 0
 
 
